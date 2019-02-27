@@ -3,7 +3,8 @@
 var defaults = {
 	trustProtoHeader: false,
 	trustAzureHeader: false,
-	trustXForwardedHostHeader: false
+	trustXForwardedHostHeader: false,
+	ignoreLocalhost: false,
 };
 
 /**
@@ -37,6 +38,10 @@ var enforceHTTPS = function(options) {
 		// Crash on pre-1.0.0-style arguments
 		if(typeof options === 'boolean') {
 			return next("express-sslify has changed the way how arguments are treated. Please check the readme.");
+		}
+
+		if(req.headers && req.headers.host && req.headers.host.includes('localhost:') && options.ignoreLocalhost) {
+			next();
 		}
 
 		options = applyOptions(options);
