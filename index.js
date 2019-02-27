@@ -41,7 +41,7 @@ var enforceHTTPS = function(options) {
 		}
 
 		if(req.headers && req.headers.host && req.headers.host.includes('localhost:') && options.ignoreLocalhost) {
-			next();
+			return next();
 		}
 
 		options = applyOptions(options);
